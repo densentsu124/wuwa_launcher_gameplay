@@ -62,15 +62,16 @@ class GameRunner:
     def run(self):
         window_title = self.window_to_select
         bbox = self.get_window_bbox(window_title)
+        self.game_folder = self.game_folder.replace("/", "\\")
         try:
             elevated()
-            # subprocess.check_call([f"{self.game_folder}/launcher.exe"])
+            subprocess.check_call([f"{self.game_folder}/launcher.exe"])
             self.delete_files_in_directory(f"{self.game_folder}/kr_game_cache/animate_bg/9e62f695209fba078e3b01be9029ed74")
 
-            # with open("links.bat", "w") as links:
-            #     for i in range(1, 451):
-            #         links.write(f'mklink "{self.game_folder}\kr_game_cache\\animate_bg\9e62f695209fba078e3b01be9029ed74\home_{i}.jpg" "{self.game_folder}\kr_game_cache\\animate_bg\9e62f695209fba078e3b01be9029ed74\home_1.jpg"\n')
-            # subprocess.run(["links.bat"], shell=True, check=True)
+            with open("links.bat", "w") as links:
+                for i in range(2, 451):
+                    links.write(f'mklink "{self.game_folder}\kr_game_cache\\animate_bg\9e62f695209fba078e3b01be9029ed74\home_{i}.jpg" "{self.game_folder}\kr_game_cache\\animate_bg\9e62f695209fba078e3b01be9029ed74\home_1.jpg"\n')
+            subprocess.run(["links.bat"], shell=True, check=True)
         except Exception:
             pass
 
@@ -82,8 +83,6 @@ class GameRunner:
                 'height': bbox['height']
             }
 
-            # cv2.namedWindow('Captured Frame', cv2.WINDOW_NORMAL)
-
             iterations_per_second = 21.216407
             interval = 1 / iterations_per_second  # Time per iteration in seconds
             while True:
@@ -94,9 +93,10 @@ class GameRunner:
                 img = cv2.cvtColor(img, cv2.COLOR_BGRA2BGR)
                 if self.resize is True:
                     img = cv2.resize(img, (1280, 760))
-                full_file = f"{self.game_folder}/kr_game_cache/animate_bg/9e62f695209fba078e3b01be9029ed74/home_1.jpg"
+                full_file = f"{self.game_folder}\kr_game_cache\\animate_bg\9e62f695209fba078e3b01be9029ed74\home_1.jpg"
 
                 try:
+                    print(full_file)
                     if os.path.isfile(full_file):
                         os.remove(full_file)
                     cv2.imwrite(full_file, img)
