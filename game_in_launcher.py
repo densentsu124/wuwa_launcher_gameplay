@@ -18,6 +18,7 @@ class GameRunner:
         self.game_folder = "C:/Games/Wuthering Waves"
         self.window_to_select = "Mozilla Firefox"
         self.resize = True
+
         # if you want to run wuwa on the launcher, make sure to run this script first before
         # opening the launcher after running the game.
 
@@ -47,11 +48,12 @@ class GameRunner:
 
     def delete_files_in_directory(self, directory_path):
         try:
+            directory_path = directory_path.replace("/", "\\")
             files = os.listdir(directory_path)
             for file in files:
                 file_path = os.path.join(directory_path, file)
+                print(file_path)
                 if os.path.isfile(file_path):
-                    print(file_path)
                     os.remove(file_path)
             print("All files deleted successfully.")
         except OSError:
@@ -62,9 +64,13 @@ class GameRunner:
         bbox = self.get_window_bbox(window_title)
         try:
             elevated()
-            subprocess.check_call([f"{self.game_folder}/launcher.exe"])
+            # subprocess.check_call([f"{self.game_folder}/launcher.exe"])
             self.delete_files_in_directory(f"{self.game_folder}/kr_game_cache/animate_bg/9e62f695209fba078e3b01be9029ed74")
-            subprocess.run(["links.bat"], shell=True, check=True)
+
+            # with open("links.bat", "w") as links:
+            #     for i in range(1, 451):
+            #         links.write(f'mklink "{self.game_folder}\kr_game_cache\\animate_bg\9e62f695209fba078e3b01be9029ed74\home_{i}.jpg" "{self.game_folder}\kr_game_cache\\animate_bg\9e62f695209fba078e3b01be9029ed74\home_1.jpg"\n')
+            # subprocess.run(["links.bat"], shell=True, check=True)
         except Exception:
             pass
 
